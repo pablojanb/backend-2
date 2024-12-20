@@ -31,7 +31,7 @@ const initializePassport = ()=>{
         {passReqToCallback:true, usernameField: 'email'},
         async (req, username, password, done) => {
             try {
-                const { first_name, last_name, age } = req.body
+                const { first_name, last_name, age, roles } = req.body
                         const alreadyExists = await usersModel.findOne({email: username})
                         if (alreadyExists) return done(null, false, {msg: 'email already registered'})
                         const data = {
@@ -39,7 +39,8 @@ const initializePassport = ()=>{
                             last_name,
                             age,
                             email: username,
-                            password: hashPass(password)
+                            password: hashPass(password),
+                            roles
                         }
                         const newUser = await usersModel.create(data)
                         return done(null, newUser)

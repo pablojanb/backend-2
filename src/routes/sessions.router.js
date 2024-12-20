@@ -1,10 +1,11 @@
 import { Router } from "express"
 import { genereteToken } from "../utils/generateToken.js"
 import { passportCall } from "../utils/passportCall.js"
+import { auth } from "../utils/auth.js"
 
 const router = Router()
 
-router.post('/register', passportCall('register') ,async(req, res)=>{
+router.post('/register', passportCall('register'), (req, res)=>{
     try {
         if (req.user) {
             const newUser = req.user
@@ -16,7 +17,7 @@ router.post('/register', passportCall('register') ,async(req, res)=>{
     }
 })
 
-router.post('/login', passportCall('login'), async(req, res)=>{
+router.post('/login', passportCall('login'), (req, res)=>{
     try {
         if (req.user) {
             const user = req.user
@@ -36,7 +37,19 @@ router.get('/logout', (req, res)=>{
     }
 })
 
-router.get('/current', passportCall('jwt') ,(req, res)=>{
+router.get('/current', passportCall('jwt'), (req, res)=>{
+    try {
+        if (req.user) {
+            const {first_name, last_name, age } = req.user
+            const data = { first_name, last_name, age }
+            res.send({status: 'succes', payload: data})
+        }
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+router.get('/admin', passportCall('jwt'), auth('admin'), (req, res)=>{
     try {
         if (req.user) {
             const {first_name, last_name, age } = req.user

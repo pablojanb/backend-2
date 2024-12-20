@@ -27,9 +27,9 @@ const usersSchema = new mongoose.Schema({
     cart: {
         type: String
     },
-    role: {
-        type: String,
-        default: 'user'
+    roles: {
+        type: [String],
+        default: ['user']
     }
 })
 

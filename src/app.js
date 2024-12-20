@@ -7,14 +7,12 @@ import passport from 'passport'
 import initializePassport from './config/passport.config.js'
 
 dotenv.config()
-
 const app = express()
 const PORT = process.env.PORT
 app.use(express.json())
 
 initializePassport()
 app.use(passport.initialize())
-
 
 app.use(cookieParser())
 
