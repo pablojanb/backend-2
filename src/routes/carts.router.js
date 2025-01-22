@@ -1,10 +1,15 @@
 import { Router } from "express"
 import CartsController from "../controllers/carts.controller.js"
+import { passportCall } from "../utils/passportCall.js"
+import { auth } from "../middlewares/authorization.js"
 
 const router = Router()
 
+router.use(passportCall('jwt'))
+router.use(auth('user'))
+
 router.post('/:uid', CartsController.createCart)
-router.put('/:cid/add/:pid', CartsController.addProductToCart)
-router.post('/:cid/purchase', CartsController.purchaseCart)
+router.post('/:cid/add/:pid', CartsController.addProductToCart)
+router.get('/:cid/purchase', CartsController.purchaseCart)
 
 export default router

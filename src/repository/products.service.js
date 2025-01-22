@@ -4,7 +4,9 @@ export default class ProductsService{
     static async addProduct(product) {
         try {
             const { title, price, stock } = product
-            //TODO validaciones de product
+            if (title === "" || isNaN(price) || isNaN(stock)) {
+                return null
+            }
             const newProduct = await ProductsDao.saveProduct(product)
             return newProduct
         } catch (error) {
@@ -23,6 +25,10 @@ export default class ProductsService{
 
     static async updateProduct(pid, product) {
         try {
+            const { title, price, stock } = product
+            if (title === "" || isNaN(price) || isNaN(stock)) {
+                return null
+            }
             const productUpdated = await ProductsDao.updateProduct(pid, product)
             return productUpdated
         } catch (error) {

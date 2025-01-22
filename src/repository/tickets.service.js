@@ -5,11 +5,10 @@ export default class TicketsService{
     static async saveTicket(cart, userId) {
         try {
             const user = await UsersService.getUser(userId)
-            const amount = cart.reduce((acc, product)=> acc + product.price, 0)
+            const amount = cart.reduce((acc, product)=> acc + (product.price * product.quantity), 0)
             const ticket = {
                 amount,
-                purchaser: user.email
-                //TODO logica para date con formato
+                purchaser: user.email,
             }
             const newTicket = await TicketsDao.saveTicket(ticket)
             return newTicket

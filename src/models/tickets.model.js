@@ -3,7 +3,7 @@ import mongoose from "mongoose"
 const ticketsSchema = new mongoose.Schema({
     purchase_datetime: {
         type: Date,
-        default: new Date,
+        default: new Date(),
         required: true
     },
     amount: {

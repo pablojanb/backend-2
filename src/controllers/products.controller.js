@@ -6,7 +6,7 @@ export default class ProductsController {
         try {
             const product = req.body
             const newProduct = await ProductsService.addProduct(product)
-            res.send(newProduct)
+            if (newProduct) res.send(newProduct)
         } catch (error) {
             console.log(error)
         }

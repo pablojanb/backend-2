@@ -20,8 +20,12 @@ export default class CartsService{
     static async addProductToCart(cid, pid) {
         try {
             const cart = await CartsDao.getCart(cid)
-            //TODO logica validar si ya existe en el carrito
-            cart.products.push({id: pid, quantity:1})
+            const alreadyInCart = cart.products.findIndex(product=>product.id === pid)
+            if (alreadyInCart > -1) {
+                cart.products[alreadyInCart].quantity += 1
+            } else {
+                cart.products.push({id: pid, quantity:1})
+            }
             const updatedCart = await CartsDao.updateCart(cid, cart)
             return updatedCart
         } catch (error) {
@@ -34,24 +38,30 @@ export default class CartsService{
             const cart = await CartsDao.getCart(cid)
             const cartAvailable = []
             const cartNotAvailable = []
-            cart.products.forEach(async (product) => {
+
+            for (const product of cart.products) {
                 const productInDb = await ProductsService.getProduct(product.id)
                 if (!productInDb || productInDb.stock < product.quantity) {
-                    //TODO logica para validar stock y que exista el producto
-                    cartNotAvailable.push(product)
-                }
-                cartAvailable.push({...product, price: productInDb.price})
-                const updatedProduct = {
+                    cartNotAvailable.push(product.id)
+                } else {
+                    cartAvailable.push({...product, price: productInDb.price})
+                    const updatedProduct = {
                     title: productInDb.title,
                     stock: productInDb.stock - product.quantity,
                     price: productInDb.price
                 }
                 await ProductsService.updateProduct(product.id, updatedProduct)
-            })
-            await CartsDao.updateCart(cid, cartNotAvailable)
+                }
+            }
+
+            cart.products = cart.products.filter(product=> cartNotAvailable.includes(product.id))
+            await CartsDao.updateCart(cid, cart)
             
-            const ticket = await TicketsService.saveTicket(cartAvailable, cart.userId)
+            if (cartAvailable.length > 0) {
+                const ticket = await TicketsService.saveTicket(cartAvailable, cart.userId)
             return ticket
+            }
+            return null
         } catch (error) {
             console.log(error)
         }
