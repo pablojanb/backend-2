@@ -30,4 +30,14 @@ export default class UsersDao {
             return {error: 'Cannot save user'}
         }
     }
+
+    static async updateUserParameter(email, newUser) {
+        try {
+            const user = await usersModel.updateOne({email}, {$set: newUser})
+            return user
+        } catch (error) {
+            console.log(error)
+            return {error: 'Cannot save user'}
+        }
+    }
 }

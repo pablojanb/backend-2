@@ -8,5 +8,7 @@ dotenv.config({
 export const config = {
     port: process.env.PORT,
     mongoUrl: process.env.MONGO,
-    jwtSecret: process.env.JWT_SECRET
+    jwtSecret: process.env.JWT_SECRET,
+    email_nodemailer: process.env.EMAIL_NODEMAILER,
+    pass_nodemailer: process.env.PASS_NODEMAILER,
 }

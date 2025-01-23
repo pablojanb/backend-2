@@ -1,5 +1,8 @@
 import { generateToken } from '../utils/generateToken.js'
 import UsersDto from '../dto/users.dto.js'
+import ResetPasswordsService from '../repositories/resetPasswords.service.js'
+import { transport } from '../config/nodemailer.js'
+import { config } from '../config/config.js'
 
 export default class AuthenticationController {
     static register(req, res) {
@@ -38,6 +41,45 @@ export default class AuthenticationController {
             if (!req.user) return res.sendUnauthorized('Invalid credentials')
             const user = new UsersDto(req.user)
             res.sendSuccess(user)
+        } catch (error) {
+            res.sendServerError(error)
+        }
+    }
+
+    static async resetPassword(req, res){
+        try {
+            const { email } = req.body
+            if (!email) return res.sendBadRequest({msg:'Missing parameters'})
+            const token = await ResetPasswordsService.saveToken(email)
+            
+            await transport.sendMail({
+                from: `${config.email_nodemailer}`,
+                to: `${email}`,
+                subject: 'Reset password',
+                html: `
+                <h2>Link to reset password</h2>
+                `
+            })
+
+            res.sendSuccess(token)
+        } catch (error) {
+            res.sendServerError(error)
+        }
+    }
+
+    static async reset(req, res){
+        try {
+            const { email, token } = req.query
+            const { password } = req.body
+            if (!email || !token || !password) return res.sendBadRequest({msg:'Missing parameters'})
+            const user = {
+                email,
+                token,
+                password
+            }
+            const result = await ResetPasswordsService.updatePasword(user)
+            if(!result) return res.sendBadRequest({msg:'Invalid token'})
+            if(result) res.sendSuccess(result)
         } catch (error) {
             res.sendServerError(error)
         }

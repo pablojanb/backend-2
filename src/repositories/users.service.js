@@ -28,4 +28,13 @@ export default class UsersService{
             console.log(error)
         }
     }
+
+    static async updateUserParameter(email, newUser) {
+        try {
+            const user = await UsersDao.updateUserParameter(email, newUser)
+            return user
+        } catch (error) {
+            console.log(error)
+        }
+    }
 }

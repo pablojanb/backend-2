@@ -32,10 +32,10 @@ const initializePassport = ()=>{
         async (req, username, password, done) => {
             try {
                 const { first_name, last_name, age, roles } = req.body
-                if(!first_name || !last_name || !age || !username || !password) return done(null, false, {msg: 'Missing data'})
+                if(!first_name || !last_name || !age || !username || !password) return done(null, false, {message: 'Missing data'})
 
                 const alreadyExists = await UsersService.getUserByEmail(username)
-                if (alreadyExists) return done(null, false, {msg: 'email already registered'})
+                if (alreadyExists) return done(null, false, {message: 'email already registered'})
                 const data = {
                     first_name,
                     last_name,
@@ -56,9 +56,9 @@ const initializePassport = ()=>{
         {usernameField: 'email'},
         async ( username, password, done) => {
             try {
-                if(!username || !password) return done(null, false, {msg: 'Missing data'})
+                if(!username || !password) return done(null, false, {message: 'Missing data'})
                 const user = await UsersService.getUserByEmail(username)
-                if (!user || !validatePass(password, user)) return done(null, false, {msg: 'invalid credentials'})
+                if (!user || !validatePass(password, user)) return done(null, false, {message: 'invalid credentials'})
                 return done(null, user)
             } catch (error) {
                 return done(error)

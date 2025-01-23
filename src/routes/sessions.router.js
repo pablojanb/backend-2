@@ -8,5 +8,7 @@ router.post('/register', passportCall('register'), AuthenticationController.regi
 router.post('/login', passportCall('login'), AuthenticationController.login)
 router.get('/logout', AuthenticationController.logout)
 router.get('/current', passportCall('jwt'), AuthenticationController.current)
+router.post('/resetPassword', AuthenticationController.resetPassword)
+router.post('/reset', AuthenticationController.reset)
 
 export default router
