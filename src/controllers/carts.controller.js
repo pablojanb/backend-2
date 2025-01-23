@@ -1,4 +1,4 @@
-import CartsService from "../repository/carts.service.js"
+import CartsService from "../repositories/carts.service.js"
 
 export default class CartsController {
 

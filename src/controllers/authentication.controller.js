@@ -4,7 +4,7 @@ import UsersDto from '../dto/users.dto.js'
 export default class AuthenticationController {
     static register(req, res) {
         try {
-            if (!req.user) return res.sendBadRequest('Failed registration')
+            if (!req.user) return res.sendBadRequest({msg:'Failed registration'})
             const newUser = req.user
             const token = generateToken(newUser)
             res.cookie('userlogged', token, {httpOnly: true, secure: false, maxAge: 60*60*24}).send(newUser)
@@ -15,10 +15,10 @@ export default class AuthenticationController {
 
     static login(req, res){
         try {
-            if (!req.user) return res.sendBadRequest('Failed login')
+            if (!req.user) return res.sendBadRequest({msg:'Failed login'})
             const user = req.user
             const token = generateToken(user)
-            res.cookie('userlogged', token, {httpOnly: true, secure: false, maxAge: 60*60*24}).send('Login correct')
+            res.cookie('userlogged', token, {httpOnly: true, secure: false, maxAge: 60*60*24}).send({msg:'Login correct'})
         } catch (error) {
             console.log(error)
             res.sendServerError(error)
@@ -27,7 +27,7 @@ export default class AuthenticationController {
 
     static logout(_, res){
         try {
-            res.clearCookie('userlogged').send('Logout correct')
+            res.clearCookie('userlogged').send({msg:'Logout correct'})
         } catch (error) {
             res.sendServerError(error)
         }

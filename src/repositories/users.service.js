@@ -1,33 +1,31 @@
-import usersModel from "../models/users.model.js"
+import UsersDao from "../dao/users.dao.js"
 
-export default class UsersDao {
+export default class UsersService{
+    
     static async getUser(uid) {
         try {
-            const user = await usersModel.findOne({_id:uid})
+            const user = await UsersDao.getUser(uid)
             return user
         } catch (error) {
             console.log(error)
-            return {error: 'Cannot find user'}
         }
     }
 
     static async getUserByEmail(email) {
         try {
-            const user = await usersModel.findOne({email})
+            const user = await UsersDao.getUserByEmail(email)
             return user
         } catch (error) {
             console.log(error)
-            return {error: 'Cannot find user'}
         }
     }
 
     static async createUser(newUser) {
         try {
-            const user = await usersModel.create(newUser)
+            const user = await UsersDao.createUser(newUser)
             return user
         } catch (error) {
             console.log(error)
-            return {error: 'Cannot save user'}
         }
     }
 }
