@@ -7,6 +7,7 @@ export default class UsersDao {
             return user
         } catch (error) {
             console.log(error)
+            return {error: 'Cannot save user'}
         }
     }
 }

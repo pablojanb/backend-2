@@ -6,20 +6,22 @@ export default class ProductsController {
         try {
             const product = req.body
             const newProduct = await ProductsService.addProduct(product)
-            if (newProduct) res.send(newProduct)
+            if (newProduct) res.sendSuccess(newProduct)
+            if (!newProduct) res.sendBadRequest('Invalid parameters')
         } catch (error) {
-            console.log(error)
+            res.sendServerError(error)
         }
     }
 
     static async updateProduct(req, res) {
        try {
-         const { pid } = req.params
-         const product = req.body
-         const updatedProduct = await ProductsService.updateProduct(pid, product)
-         res.send(updatedProduct)
+            const { pid } = req.params
+            const product = req.body
+            const updatedProduct = await ProductsService.updateProduct(pid, product)
+            if (updatedProduct) res.sendSuccess(updatedProduct)
+            if (!updatedProduct) res.sendBadRequest('Invalid parameters')
        } catch (error) {
-        console.log(error)
+            res.sendServerError(error)
        }
     }
 
@@ -27,9 +29,9 @@ export default class ProductsController {
         try {
             const { pid } = req.params
             const productDeleted = await ProductsService.deleteProduct(pid)
-            res.send(productDeleted)
+            res.sendSuccess(productDeleted)
         } catch (error) {
-            console.log(error)
+            res.sendServerError(error)
         }
     }
 }

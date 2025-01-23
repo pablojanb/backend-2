@@ -57,11 +57,10 @@ export default class CartsService{
             cart.products = cart.products.filter(product=> cartNotAvailable.includes(product.id))
             await CartsDao.updateCart(cid, cart)
             
-            if (cartAvailable.length > 0) {
-                const ticket = await TicketsService.saveTicket(cartAvailable, cart.userId)
+            if (cartAvailable.length < 1) return null
+            
+            const ticket = await TicketsService.saveTicket(cartAvailable, cart.userId)
             return ticket
-            }
-            return null
         } catch (error) {
             console.log(error)
         }

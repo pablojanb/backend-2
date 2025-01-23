@@ -8,6 +8,7 @@ export default class ProductsDao {
             return newProduct
         } catch (error) {
             console.log(error)
+            return {error: 'Cannot save product'}
         }
     }
 
@@ -17,6 +18,7 @@ export default class ProductsDao {
             return product
         } catch (error) {
             console.log(error)
+            return {error: 'Cannot get product'}
         }
     }
 
@@ -26,6 +28,7 @@ export default class ProductsDao {
             return newProduct
         } catch (error) {
             console.log(error)
+            return {error: 'Cannot update product'}
         }
     }
 
@@ -35,6 +38,7 @@ export default class ProductsDao {
             return product
         } catch (error) {
             console.log(error)
+            return {error: 'Cannot delete product'}
         }
     }
 }

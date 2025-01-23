@@ -8,6 +8,7 @@ export default class TicketsDao{
             return newTicket
         } catch (error) {
             console.log(error)
+            return {error: 'Cannot save ticket'}
         }
     }
 }

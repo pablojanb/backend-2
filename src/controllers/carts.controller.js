@@ -6,9 +6,9 @@ export default class CartsController {
         try {
             const { uid } = req.params
             const newCart = await CartsService.createCart(uid)
-            res.send(newCart)
+            res.sendSuccess(newCart)
         } catch (error) {
-            console.log(error)
+            res.sendServerError(error)
         }
     }
     
@@ -16,9 +16,9 @@ export default class CartsController {
         try {
             const { cid, pid } = req.params
             const result = await CartsService.addProductToCart(cid, pid)
-            res.send(result)
+            res.sendSuccess(result)
         } catch (error) {
-            console.log(error)
+            res.sendServerError(error)
         }
     }
 
@@ -26,9 +26,9 @@ export default class CartsController {
         try {
             const { cid } = req.params
             const purchase = await CartsService.purchaseCart(cid)
-            res.send(purchase)
+            res.sendSuccess(purchase)
         } catch (error) {
-            console.log(error)
+            res.sendServerError(error)
         }
     }
 }

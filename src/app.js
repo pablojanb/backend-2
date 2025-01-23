@@ -8,16 +8,21 @@ import passport from 'passport'
 import initializePassport from './config/passport.config.js'
 import ConnectioDB from './config/connectionDB.js'
 import cors from 'cors'
+import { customResposes } from './utils/customResponses.js'
 
 const app = express()
-app.use(cors())
 app.use(express.json())
-//app.use(express.urlencoded({extended:true}))
+app.use(cookieParser())
 
+app.use(cors({
+    origin: 'http://127.0.0.1:5500',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true
+}))
+
+app.use(customResposes)
 initializePassport()
 app.use(passport.initialize())
-
-app.use(cookieParser())
 
 app.use('/api/sessions', sessionsRouter)
 app.use('/api/carts', cartsRouter)

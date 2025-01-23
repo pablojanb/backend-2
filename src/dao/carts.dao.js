@@ -7,6 +7,7 @@ export default class CartsDao {
             return newCart
         } catch (error) {
             console.log(error)
+            return {error: 'Cannot create cart'}
         }
     }
     
@@ -16,6 +17,7 @@ export default class CartsDao {
             return cart
         } catch (error) {
             console.log(error)
+            return {error: 'Cannot get cart'}
         }
     }
 
@@ -25,6 +27,7 @@ export default class CartsDao {
             return updatedCart
         } catch (error) {
             console.log(error)
+            return {error: 'Cannot update cart'}
         }
     }
 }

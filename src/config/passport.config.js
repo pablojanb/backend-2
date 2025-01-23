@@ -32,18 +32,20 @@ const initializePassport = ()=>{
         async (req, username, password, done) => {
             try {
                 const { first_name, last_name, age, roles } = req.body
-                        const alreadyExists = await usersModel.findOne({email: username})
-                        if (alreadyExists) return done(null, false, {msg: 'email already registered'})
-                        const data = {
-                            first_name,
-                            last_name,
-                            age,
-                            email: username,
-                            password: hashPass(password),
-                            roles
-                        }
-                        const newUser = await usersModel.create(data)
-                        return done(null, newUser)
+                if(!first_name || !last_name || !age || !username || !password) return done(null, false, {msg: 'Missing data'})
+
+                const alreadyExists = await usersModel.findOne({email: username})
+                if (alreadyExists) return done(null, false, {msg: 'email already registered'})
+                const data = {
+                    first_name,
+                    last_name,
+                    age,
+                    email: username,
+                    password: hashPass(password),
+                    roles
+                }
+                const newUser = await usersModel.create(data)
+                return done(null, newUser)
             } catch (error) {
                 return done(error)
             }
@@ -54,6 +56,7 @@ const initializePassport = ()=>{
         {usernameField: 'email'},
         async ( username, password, done) => {
             try {
+                if(!username || !password) return done(null, false, {msg: 'Missing data'})
                 const user = await usersModel.findOne({email: username})
                 if (!user || !validatePass(password, user)) return done(null, false, {msg: 'invalid credentials'})
                 return done(null, user)
