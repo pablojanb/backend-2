@@ -1,7 +1,7 @@
 import jwt, { ExtractJwt } from 'passport-jwt'
 import passport from 'passport'
 import local from 'passport-local'
-import UsersService from '../repositories/users.service.js'
+import { usersService } from '../repositories/users/index.js'
 import { hashPass, validatePass } from '../utils/password.js'
 
 const JWTStrategy = jwt.Strategy
@@ -34,7 +34,7 @@ const initializePassport = ()=>{
                 const { first_name, last_name, age, roles } = req.body
                 if(!first_name || !last_name || !age || !username || !password) return done(null, false, {message: 'Missing data'})
 
-                const alreadyExists = await UsersService.getUserByEmail(username)
+                const alreadyExists = await usersService.getUserByEmail(username)
                 if (alreadyExists) return done(null, false, {message: 'email already registered'})
                 const data = {
                     first_name,
@@ -44,7 +44,7 @@ const initializePassport = ()=>{
                     password: hashPass(password),
                     roles
                 }
-                const newUser = await UsersService.createUser(data)
+                const newUser = await usersService.createUser(data)
                 return done(null, newUser)
             } catch (error) {
                 return done(error)
@@ -57,7 +57,7 @@ const initializePassport = ()=>{
         async ( username, password, done) => {
             try {
                 if(!username || !password) return done(null, false, {message: 'Missing data'})
-                const user = await UsersService.getUserByEmail(username)
+                const user = await usersService.getUserByEmail(username)
                 if (!user || !validatePass(password, user)) return done(null, false, {message: 'invalid credentials'})
                 return done(null, user)
             } catch (error) {

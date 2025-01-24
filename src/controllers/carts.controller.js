@@ -1,11 +1,11 @@
-import CartsService from "../repositories/carts.service.js"
+import { cartsService } from "../repositories/carts/index.js"
 
 export default class CartsController {
 
     static async createCart(req, res) {
         try {
             const { uid } = req.params
-            const newCart = await CartsService.createCart(uid)
+            const newCart = await cartsService.createCart(uid)
             res.sendSuccess(newCart)
         } catch (error) {
             res.sendServerError(error)
@@ -15,7 +15,7 @@ export default class CartsController {
     static async addProductToCart(req, res) {
         try {
             const { cid, pid } = req.params
-            const result = await CartsService.addProductToCart(cid, pid)
+            const result = await cartsService.addProductToCart(cid, pid)
             res.sendSuccess(result)
         } catch (error) {
             res.sendServerError(error)
@@ -25,7 +25,7 @@ export default class CartsController {
     static async purchaseCart(req, res) {
         try {
             const { cid } = req.params
-            const purchase = await CartsService.purchaseCart(cid)
+            const purchase = await cartsService.purchaseCart(cid)
             res.sendSuccess(purchase)
         } catch (error) {
             res.sendServerError(error)

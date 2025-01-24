@@ -1,37 +1,39 @@
-import UsersDao from "../dao/users.dao.js"
-
 export default class UsersService{
     
-    static async getUser(uid) {
+    constructor(dao){
+        this.dao = dao
+    }
+
+    async getUser(uid) {
         try {
-            const user = await UsersDao.getUser(uid)
+            const user = await this.dao.getUser(uid)
             return user
         } catch (error) {
             console.log(error)
         }
     }
 
-    static async getUserByEmail(email) {
+    async getUserByEmail(email) {
         try {
-            const user = await UsersDao.getUserByEmail(email)
+            const user = await this.dao.getUserByEmail(email)
             return user
         } catch (error) {
             console.log(error)
         }
     }
 
-    static async createUser(newUser) {
+    async createUser(newUser) {
         try {
-            const user = await UsersDao.createUser(newUser)
+            const user = await this.dao.createUser(newUser)
             return user
         } catch (error) {
             console.log(error)
         }
     }
 
-    static async updateUserParameter(email, newUser) {
+    async updateUserParameter(email, newUser) {
         try {
-            const user = await UsersDao.updateUserParameter(email, newUser)
+            const user = await this.dao.updateUserParameter(email, newUser)
             return user
         } catch (error) {
             console.log(error)

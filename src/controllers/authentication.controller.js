@@ -1,6 +1,6 @@
 import { generateToken } from '../utils/generateToken.js'
 import UsersDto from '../dto/users.dto.js'
-import ResetPasswordsService from '../repositories/resetPasswords.service.js'
+import { resetPasswordService } from '../repositories/resetPasswords/index.js'
 import { transport } from '../config/nodemailer.js'
 import { config } from '../config/config.js'
 
@@ -50,7 +50,7 @@ export default class AuthenticationController {
         try {
             const { email } = req.body
             if (!email) return res.sendBadRequest({msg:'Missing parameters'})
-            const token = await ResetPasswordsService.saveToken(email)
+            const token = await resetPasswordService.saveToken(email)
             
             await transport.sendMail({
                 from: `${config.email_nodemailer}`,
@@ -77,7 +77,7 @@ export default class AuthenticationController {
                 token,
                 password
             }
-            const result = await ResetPasswordsService.updatePasword(user)
+            const result = await resetPasswordService.updatePasword(user)
             if(!result) return res.sendBadRequest({msg:'Invalid token'})
             if(result) res.sendSuccess(result)
         } catch (error) {

@@ -1,16 +1,20 @@
-import TicketsDao from "../dao/tickets.dao.js"
-import UsersService from "./users.service.js"
+import { usersService } from "../users/index.js"
 
 export default class TicketsService{
-    static async saveTicket(cart, userId) {
+
+    constructor(dao){
+        this.dao = dao
+    }
+
+    async saveTicket(cart, userId) {
         try {
-            const user = await UsersService.getUser(userId)
+            const user = await usersService.getUser(userId)
             const amount = cart.reduce((acc, product)=> acc + (product.price * product.quantity), 0)
             const ticket = {
                 amount,
                 purchaser: user.email,
             }
-            const newTicket = await TicketsDao.saveTicket(ticket)
+            const newTicket = await this.dao.saveTicket(ticket)
             return newTicket
         } catch (error) {
             console.log(error)

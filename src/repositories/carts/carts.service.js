@@ -1,46 +1,49 @@
-import CartsDao from "../dao/carts.dao.js"
-import ProductsService from "./products.service.js"
-import TicketsService from "./tickets.service.js"
+import { productService } from "../products/index.js"
+import {ticketsService} from '../../repositories/tickets/index.js'
 
 export default class CartsService{
     
-    static async createCart(uid) {
+    constructor(dao){
+        this.dao = dao
+    }
+
+    async createCart(uid) {
         try {
             const cart = {
                 userId: uid,
                 products: []
             }
-            const newCart = await CartsDao.createCart(cart)
+            const newCart = await this.dao.createCart(cart)
             return newCart
         } catch (error) {
             console.log(error)
         }
     }
     
-    static async addProductToCart(cid, pid) {
+    async addProductToCart(cid, pid) {
         try {
-            const cart = await CartsDao.getCart(cid)
+            const cart = await this.dao.getCart(cid)
             const alreadyInCart = cart.products.findIndex(product=>product.id === pid)
             if (alreadyInCart > -1) {
                 cart.products[alreadyInCart].quantity += 1
             } else {
                 cart.products.push({id: pid, quantity:1})
             }
-            const updatedCart = await CartsDao.updateCart(cid, cart)
+            const updatedCart = await this.dao.updateCart(cid, cart)
             return updatedCart
         } catch (error) {
             console.log(error)
         }
     }
     
-    static async purchaseCart(cid) {
+    async purchaseCart(cid) {
         try {
-            const cart = await CartsDao.getCart(cid)
+            const cart = await this.dao.getCart(cid)
             const cartAvailable = []
             const cartNotAvailable = []
 
             for (const product of cart.products) {
-                const productInDb = await ProductsService.getProduct(product.id)
+                const productInDb = await productService.getProduct(product.id)
                 if (!productInDb || productInDb.stock < product.quantity) {
                     cartNotAvailable.push(product.id)
                 } else {
@@ -50,16 +53,16 @@ export default class CartsService{
                     stock: productInDb.stock - product.quantity,
                     price: productInDb.price
                 }
-                await ProductsService.updateProduct(product.id, updatedProduct)
+                await productService.updateProduct(product.id, updatedProduct)
                 }
             }
 
             cart.products = cart.products.filter(product=> cartNotAvailable.includes(product.id))
-            await CartsDao.updateCart(cid, cart)
+            await this.dao.updateCart(cid, cart)
             
             if (cartAvailable.length < 1) return null
             
-            const ticket = await TicketsService.saveTicket(cartAvailable, cart.userId)
+            const ticket = await ticketsService.saveTicket(cartAvailable, cart.userId)
             return ticket
         } catch (error) {
             console.log(error)

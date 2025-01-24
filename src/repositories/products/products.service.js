@@ -1,44 +1,47 @@
-import ProductsDao from "../dao/products.dao.js"
-
 export default class ProductsService{
-    static async addProduct(product) {
+
+    constructor(dao){
+        this.dao = dao
+    }
+
+    async addProduct(product) {
         try {
             const { title, price, stock } = product
             if (title === "" || isNaN(price) || isNaN(stock)) {
                 return null
             }
-            const newProduct = await ProductsDao.saveProduct(product)
+            const newProduct = await this.dao.saveProduct(product)
             return newProduct
         } catch (error) {
             console.log(error)
         }
     }
 
-    static async getProduct(pid) {
+    async getProduct(pid) {
         try {
-            const product = ProductsDao.getProduct(pid)
+            const product = this.dao.getProduct(pid)
             return product
         } catch (error) {
             console.log(error)
         }
     }
 
-    static async updateProduct(pid, product) {
+    async updateProduct(pid, product) {
         try {
             const { title, price, stock } = product
             if (title === "" || isNaN(price) || isNaN(stock)) {
                 return null
             }
-            const productUpdated = await ProductsDao.updateProduct(pid, product)
+            const productUpdated = await this.dao.updateProduct(pid, product)
             return productUpdated
         } catch (error) {
             console.log(error)
         }
     }
 
-    static async deleteProduct(pid) {
+    async deleteProduct(pid) {
         try {
-            const productDeleted = await ProductsDao.deleteProduct(pid)
+            const productDeleted = await this.dao.deleteProduct(pid)
             return productDeleted
         } catch (error) {
             console.log(error)
