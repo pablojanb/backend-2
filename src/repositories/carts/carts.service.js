@@ -23,6 +23,8 @@ export default class CartsService{
     async addProductToCart(cid, pid) {
         try {
             const cart = await this.dao.getCart(cid)
+            const product = await productService.getProduct(pid)
+            if (!cart || !product) return null
             const alreadyInCart = cart.products.findIndex(product=>product.id === pid)
             if (alreadyInCart > -1) {
                 cart.products[alreadyInCart].quantity += 1
@@ -39,6 +41,7 @@ export default class CartsService{
     async purchaseCart(cid) {
         try {
             const cart = await this.dao.getCart(cid)
+            if (!cart) return null
             const cartAvailable = []
             const cartNotAvailable = []
 
