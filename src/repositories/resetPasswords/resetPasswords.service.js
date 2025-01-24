@@ -30,7 +30,6 @@ export default class ResetPasswordsService{
             const updatedUser = {
                 password: hashPass(user.password)
             }
-            console.log()
             const result = await usersService.updateUserParameter(user.email, updatedUser)
             return result
         } catch (error) {

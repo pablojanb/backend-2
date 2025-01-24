@@ -7,7 +7,7 @@ export default class UsersDao {
             return user
         } catch (error) {
             console.log(error)
-            return {error: 'Cannot find user'}
+            return {error: 'Cannot get user'}
         }
     }
 
@@ -17,7 +17,7 @@ export default class UsersDao {
             return user
         } catch (error) {
             console.log(error)
-            return {error: 'Cannot find user'}
+            return {error: 'Cannot get user'}
         }
     }
 
@@ -37,7 +37,7 @@ export default class UsersDao {
             return user
         } catch (error) {
             console.log(error)
-            return {error: 'Cannot save user'}
+            return {error: 'Cannot update user'}
         }
     }
 }

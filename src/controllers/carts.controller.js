@@ -16,7 +16,8 @@ export default class CartsController {
         try {
             const { cid, pid } = req.params
             const result = await cartsService.addProductToCart(cid, pid)
-            res.sendSuccess(result)
+            if (!result) res.sendBadRequest("Cart or product doesn't exist")
+            if (result) res.sendSuccess(result)
         } catch (error) {
             res.sendServerError(error)
         }

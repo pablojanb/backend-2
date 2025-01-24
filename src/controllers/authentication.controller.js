@@ -23,7 +23,6 @@ export default class AuthenticationController {
             const token = generateToken(user)
             res.cookie('userlogged', token, {httpOnly: true, secure: false, maxAge: 60*60*24}).send({msg:'Login correct'})
         } catch (error) {
-            console.log(error)
             res.sendServerError(error)
         }
     }
