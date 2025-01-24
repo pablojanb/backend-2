@@ -1,4 +1,4 @@
-import { usersService } from "../users/index.js"
+import { usersService } from "./index.js"
 
 export default class TicketsService{
 

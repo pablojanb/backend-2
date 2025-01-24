@@ -1,4 +1,4 @@
-import { productService } from '../repositories/products/index.js'
+import { productService } from '../repositories/index.js'
 
 export default class ProductsController {
 

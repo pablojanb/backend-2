@@ -1,7 +1,7 @@
 import jwt, { ExtractJwt } from 'passport-jwt'
 import passport from 'passport'
 import local from 'passport-local'
-import { usersService } from '../repositories/users/index.js'
+import { usersService } from '../repositories/index.js'
 import { hashPass, validatePass } from '../utils/password.js'
 
 const JWTStrategy = jwt.Strategy

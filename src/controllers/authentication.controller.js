@@ -1,6 +1,6 @@
 import { generateToken } from '../utils/generateToken.js'
 import UsersDto from '../dto/users.dto.js'
-import { resetPasswordService } from '../repositories/resetPasswords/index.js'
+import { resetPasswordService } from '../repositories/index.js'
 import { transport } from '../config/nodemailer.js'
 import { config } from '../config/config.js'
 

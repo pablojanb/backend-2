@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid'
-import { hashPass } from "../../utils/password.js"
-import {usersService} from '../users/index.js'
+import { hashPass } from "../utils/password.js"
+import { usersService } from './index.js'
 
 export default class ResetPasswordsService{
 

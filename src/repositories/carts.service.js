@@ -1,5 +1,5 @@
-import { productService } from "../products/index.js"
-import { ticketsService } from '../../repositories/tickets/index.js'
+import { productService } from "./index.js"
+import { ticketsService } from './index.js'
 
 export default class CartsService{
     
