@@ -29,8 +29,13 @@ app.use('/api/sessions', sessionsRouter)
 app.use('/api/carts', cartsRouter)
 app.use('/api/products', productsRouter)
 
-app.listen(config.port, ()=> {
-    console.log(`Listening on port ${config.port}`)
+app.use((err, _, res, __) => {
+    console.error(err.stack)
+    res.status(500).json({ error: 'Something went wrong!'})
 })
 
 ConnectioDB.getInstance()
+
+app.listen(config.port, ()=> {
+    console.log(`Listening on port ${config.port}`)
+})

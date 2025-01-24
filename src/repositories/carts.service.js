@@ -1,5 +1,6 @@
 import { productService } from "./index.js"
 import { ticketsService } from './index.js'
+import TicketsDto from "../dto/tickets.dto.js"
 
 export default class CartsService{
     
@@ -62,11 +63,12 @@ export default class CartsService{
 
             cart.products = cart.products.filter(product=> cartNotAvailable.includes(product.id))
             await this.dao.updateCart(cid, cart)
-            
+
             if (cartAvailable.length < 1) return null
-            
+
             const ticket = await ticketsService.saveTicket(cartAvailable, cart.userId)
-            return ticket
+            const result = new TicketsDto(ticket, cartNotAvailable)
+            return result
         } catch (error) {
             console.log(error)
         }
