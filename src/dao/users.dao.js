@@ -21,6 +21,26 @@ export default class UsersDao {
         }
     }
 
+    static async getUserByGoogleId(gid) {
+        try {
+            const user = await usersModel.findOne({id_google:gid})
+            return user
+        } catch (error) {
+            console.log(error)
+            return {error: 'Cannot get user'}
+        }
+    }
+
+    static async getUserByGithubId(gid) {
+        try {
+            const user = await usersModel.findOne({id_github:gid})
+            return user
+        } catch (error) {
+            console.log(error)
+            return {error: 'Cannot get user'}
+        }
+    }
+
     static async createUser(newUser) {
         try {
             const user = await usersModel.create(newUser)

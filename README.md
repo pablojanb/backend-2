@@ -18,6 +18,8 @@ Según el tipo de rol asignado para cada usuario existen diferentes funcionalida
 - **MongoDB:** Para la persistencia de datos.
 - **Mongoose:** Para interactuar con MongoDB desde el servidor.
 - **Passport:** Como estrategia de autenticación.
+- **Passport-google-oauth:** Autenticación con google.
+- **Passport-github2:** Autenticación con github.
 - **BCrypt:** Para manejo de contraseñas.
 - **JsonWebToken:** Para autenticación mediante tokens.
 - **Nodemailer:** Para envio de correos electronicos.
@@ -44,8 +46,12 @@ Para ejecutar esta aplicación en tu entorno local, sigue los siguientes pasos:
 `PORT = 8080`
 `MONGO = mongodb://localhost:27017/mydb?retryWrites=true&w=majority`
 `JWT_SECRET = df83kGSd62Mf8UvgF428JJh8`
-`EMAIL_NODEMAILER = my@mail.com`
+`EMAIL_NODEMAILER = my@email.com`
 `PASS_NODEMAILER = xxxx xxxx xxxx xxxx`
+`clientIDGoogle = xxxx xxxx xxxx xxxx`
+`clientSecretGoogle = xxxx xxxx xxxx xxxx`
+`clientIDGithub = xxxx xxxx xxxx xxxx`
+`clientSecretGithub = xxxx xxxx xxxx xxxx`
 
 5. **Inicia el servidor de desarrollo:**
 

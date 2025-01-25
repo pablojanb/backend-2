@@ -11,4 +11,8 @@ export const config = {
     jwtSecret: process.env.JWT_SECRET,
     email_nodemailer: process.env.EMAIL_NODEMAILER,
     pass_nodemailer: process.env.PASS_NODEMAILER,
+    clientIDGoogle: process.env.clientIDGoogle,
+    clientSecretGoogle: process.env.clientSecretGoogle,
+    clientIdGithub: process.env.clientIdGithub,
+    clientSecretGithub: process.env.clientSecretGithub
 }

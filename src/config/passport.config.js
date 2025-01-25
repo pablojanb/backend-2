@@ -3,9 +3,13 @@ import passport from 'passport'
 import local from 'passport-local'
 import { usersService } from '../repositories/index.js'
 import { hashPass, validatePass } from '../utils/password.js'
+import google from 'passport-google-oauth'
+import StrategyGithub from 'passport-github2'
+import { config } from './config.js'
 
 const JWTStrategy = jwt.Strategy
 const LocalStrategy = local.Strategy
+const GoogleStrategy = google.OAuth2Strategy
 
 const initializePassport = ()=>{
 
@@ -62,6 +66,56 @@ const initializePassport = ()=>{
                 return done(null, user)
             } catch (error) {
                 return done(error)
+            }
+        }
+    ))
+
+    passport.use(new GoogleStrategy({
+        clientID: config.clientIDGoogle,
+        clientSecret: config.clientSecretGoogle,
+        callbackURL: 'http://localhost:8080/api/sessions/googleCallBack',
+        scope: [ 'profile' ]
+      },
+      async (_,__, profile, done) =>{
+        try {
+            const user = await usersService.getUserByGoogleId(profile._json.sub)
+            if (!user) {
+                const newUser = {
+                    first_name: profile._json.given_name,
+                    last_name: profile._json.family_name,
+                    id_google: profile._json.sub
+                }
+                const data = await usersService.createUser(newUser)
+                return done(null, data)
+            } else {
+                return done(null, user)
+            }
+        } catch (error) {
+            return done(error)
+        }
+      }))
+
+      passport.use('github', new StrategyGithub(
+        {
+            clientID: config.clientIdGithub,
+            clientSecret: config.clientSecretGithub,
+            callbackURL: 'http://localhost:8080/api/sessions/githubCallBack'
+        },
+        async (_, __, profile, done) =>{
+            try {
+                const user = await usersService.getUserByGithubId(profile._json.id)
+                if (!user) {
+                    const newUser = {
+                        first_name: profile._json.name || "",
+                        id_github:profile._json.id
+                    }
+                    const data = await usersService.createUser(newUser)
+                    done(null, data)
+                } else {
+                    done(null, user)
+                }
+            } catch (error) {
+                done(error)
             }
         }
     ))

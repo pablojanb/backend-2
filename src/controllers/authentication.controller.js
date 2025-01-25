@@ -10,7 +10,7 @@ export default class AuthenticationController {
             if (!req.user) return res.sendBadRequest({msg:'Failed registration'})
             const newUser = req.user
             const token = generateToken(newUser)
-            res.cookie('userlogged', token, {httpOnly: true, secure: false, maxAge: 60*60*24}).send(newUser)
+            res.cookie('userlogged', token, {httpOnly: true, secure: false, maxAge: 3600000}).send(newUser)
         } catch (error) {
             res.sendServerError(error)
         }
@@ -21,7 +21,7 @@ export default class AuthenticationController {
             if (!req.user) return res.sendBadRequest({msg:'Failed login'})
             const user = req.user
             const token = generateToken(user)
-            res.cookie('userlogged', token, {httpOnly: true, secure: false, maxAge: 60*60*24}).send({msg:'Login correct'})
+            res.cookie('userlogged', token, {httpOnly: true, secure: false, maxAge: 3600000}).send({msg:'Login correct'})
         } catch (error) {
             res.sendServerError(error)
         }
@@ -79,6 +79,28 @@ export default class AuthenticationController {
             const result = await resetPasswordService.updatePasword(user)
             if(!result) return res.sendBadRequest({msg:'Invalid token'})
             if(result) res.sendSuccess(result)
+        } catch (error) {
+            res.sendServerError(error)
+        }
+    }
+
+    static loginGoogle(req, res){
+        try {
+            if (!req.user) return res.sendBadRequest({msg:'Failed login with google'})
+            const user = req.user
+            const token = generateToken(user)
+            res.cookie('userlogged', token, {httpOnly: true, secure: false, maxAge: 3600000}).send({msg:'Login correct'})
+        } catch (error) {
+            res.sendServerError(error)
+        }
+    }
+
+    static loginGithub(req, res){
+        try {
+            if (!req.user) return res.sendBadRequest({msg:'Failed login with github'})
+            const user = req.user
+            const token = generateToken(user)
+            res.cookie('userlogged', token, {httpOnly: true, secure: false, maxAge: 3600000}).send({msg:'Login correct'})
         } catch (error) {
             res.sendServerError(error)
         }

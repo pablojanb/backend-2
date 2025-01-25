@@ -3,34 +3,17 @@ import mongoose from "mongoose"
 const collectionName = 'users'
 
 const usersSchema = new mongoose.Schema({
-    first_name: {
-        type: String,
-        required: true
-    },
-    last_name: {
-        type: String,
-        required: true
-    },
-    age: {
-        type: Number,
-        required: true
-    },
-    email: {
-        type: String,
-        required: true,
-        unique: true
-    },
-    password: {
-        type: String,
-        required: true
-    },
-    cart: {
-        type: String
-    },
+    first_name: String,
+    last_name: String,
+    email: String,
+    password: String,
+    cart: String,
     roles: {
         type: [String],
         default: ['user']
-    }
+    },
+    id_google: String,
+    id_github: Number
 })
 
 export default mongoose.model(collectionName, usersSchema)

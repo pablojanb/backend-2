@@ -22,6 +22,24 @@ export default class UsersService{
         }
     }
 
+    async getUserByGoogleId(gid) {
+        try {
+            const user = await this.dao.getUserByGoogleId(gid)
+            return user
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async getUserByGithubId(gid) {
+        try {
+            const user = await this.dao.getUserByGithubId(gid)
+            return user
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     async createUser(newUser) {
         try {
             const user = await this.dao.createUser(newUser)
