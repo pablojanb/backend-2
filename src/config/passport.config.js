@@ -70,7 +70,7 @@ const initializePassport = ()=>{
         }
     ))
 
-    passport.use(new GoogleStrategy({
+    passport.use('google', new GoogleStrategy({
         clientID: config.clientIDGoogle,
         clientSecret: config.clientSecretGoogle,
         callbackURL: 'http://localhost:8080/api/sessions/googleCallBack',
