@@ -16,6 +16,6 @@ const resetPasswordSchema = new mongoose.Schema({
     }
 })
 
-resetPasswordSchema.index({createdAt: 1}, {expireAfterSeconds: 900})
+resetPasswordSchema.index({createdAt: 1}, {expireAfterSeconds: 3600})
 
 export default mongoose.model('resetPasswords', resetPasswordSchema)

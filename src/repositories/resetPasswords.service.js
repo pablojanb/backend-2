@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid'
-import { hashPass } from "../utils/password.js"
+import { hashPass, validatePass } from "../utils/password.js"
 import { usersService } from './index.js'
 
 export default class ResetPasswordsService{
@@ -25,8 +25,11 @@ export default class ResetPasswordsService{
     async updatePasword(user) {
         try {
             const tokenDB = await this.dao.getToken(user.email)
+            if (!tokenDB || tokenDB !== user.token) return null
 
-            if (!tokenDB || tokenDB.token !== user.token) return null
+            const userDB = await usersService.getUserByEmail(user.email)
+            if (validatePass(user.password, userDB)) return 'Same password'
+
             const updatedUser = {
                 password: hashPass(user.password)
             }

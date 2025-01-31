@@ -50,7 +50,7 @@ export default class AuthenticationController {
             const { email } = req.body
             if (!email) return res.sendBadRequest({msg:'Missing parameters'})
             const token = await resetPasswordService.saveToken(email)
-            
+
             await transport.sendMail({
                 from: `${config.email_nodemailer}`,
                 to: `${email}`,
@@ -78,29 +78,8 @@ export default class AuthenticationController {
             }
             const result = await resetPasswordService.updatePasword(user)
             if(!result) return res.sendBadRequest({msg:'Invalid token'})
+            if(result === 'Same password') return res.sendBadRequest({msg:'The password cannot be the same as the current one'})
             if(result) res.sendSuccess(result)
-        } catch (error) {
-            res.sendServerError(error)
-        }
-    }
-
-    static loginGoogle(req, res){
-        try {
-            if (!req.user) return res.sendBadRequest({msg:'Failed login with google'})
-            const user = req.user
-            const token = generateToken(user)
-            res.cookie('userlogged', token, {httpOnly: true, secure: false, maxAge: 3600000}).send({msg:'Login correct'})
-        } catch (error) {
-            res.sendServerError(error)
-        }
-    }
-
-    static loginGithub(req, res){
-        try {
-            if (!req.user) return res.sendBadRequest({msg:'Failed login with github'})
-            const user = req.user
-            const token = generateToken(user)
-            res.cookie('userlogged', token, {httpOnly: true, secure: false, maxAge: 3600000}).send({msg:'Login correct'})
         } catch (error) {
             res.sendServerError(error)
         }

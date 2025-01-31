@@ -27,7 +27,7 @@ export default class CartsController {
         try {
             const { cid } = req.params
             const purchase = await cartsService.purchaseCart(cid)
-            if (purchase===null) return res.sendServerError('Cannot purchase cart right now')
+            if (!purchase) return res.sendServerError('Cannot purchase cart right now')
             res.sendSuccess(purchase)
         } catch (error) {
             res.sendServerError(error)

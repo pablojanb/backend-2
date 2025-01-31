@@ -36,14 +36,13 @@ const initializePassport = ()=>{
         async (req, username, password, done) => {
             try {
                 const { first_name, last_name, age, roles } = req.body
-                if(!first_name || !last_name || !age || !username || !password) return done(null, false, {message: 'Missing data'})
+                if(!first_name || !last_name || !username || !password) return done(null, false, {message: 'Missing data'})
 
                 const alreadyExists = await usersService.getUserByEmail(username)
                 if (alreadyExists) return done(null, false, {message: 'email already registered'})
                 const data = {
                     first_name,
                     last_name,
-                    age,
                     email: username,
                     password: hashPass(password),
                     roles
